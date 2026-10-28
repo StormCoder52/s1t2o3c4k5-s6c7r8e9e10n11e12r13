@@ -8,9 +8,9 @@ import pandas as pd
 
 from ai_engine import config as C
 from ai_engine.labels import label_stock
+from indicators_logic.common import BARS_PER_DAY
 
-STOCK_FEATURES = [
-    "Ret_1", "Ret_5", "Ret_15", "Ret_30",
+STOCK_FEATURES = [f"Ret_{m}" for m in C.RET_MINUTES] + [
     "Dist_VWAP", "Dist_EMA9", "Dist_EMA26", "Dist_EMA50", "EMA_Spread",
     "MACD_Hist_N", "RSI_14", "ADX", "DI_Diff", "TSI", "BB_PctB", "BB_Width",
     "ATR_Pct", "Vol_Ratio_20",
@@ -28,8 +28,8 @@ def build_features(df):
     atr = df["ATR"].where(df["ATR"] > 0)
     f = pd.DataFrame(index=df.index)
 
-    for n in (1, 5, 15, 30):  # day-aware: no returns across the overnight gap
-        f[f"Ret_{n}"] = np.log(close / close.groupby(day).shift(n))
+    for m in C.RET_MINUTES:  # day-aware: no returns across the overnight gap
+        f[f"Ret_{m}"] = np.log(close / close.groupby(day).shift(m // C.BAR_MINUTES))
 
     f["Dist_VWAP"] = (close - df["VWAP"]) / atr
     for p in (9, 26, 50):
@@ -70,7 +70,7 @@ def stock_quality(df):
     interior = per_day.iloc[1:-1] if len(per_day) >= 3 else per_day
     return {
         "days": int(len(per_day)),
-        "coverage": float(interior.median() / 375) if len(interior) else 0.0,
+        "coverage": float(interior.median() / BARS_PER_DAY) if len(interior) else 0.0,
     }
 
 
