@@ -29,8 +29,8 @@ TARGETS = [(s, sl, rr) for s in C.SIDES for sl, rr in C.COMBOS]  # 12 trade setu
 R_COLS = [C.col_r(*t) for t in TARGETS]
 MIN_TRADES_VAL = 25   # a validation threshold must give at least this many trades
 N_BOOT = 2000
-COOLDOWN_MIN = C.HORIZON_BARS  # one trade per stock per 60 min => trades never overlap
-MODEL_DIR = os.path.join("ai_engine", "checkpoints", "stage_b")
+COOLDOWN_MIN = C.HORIZON_MIN  # one trade per stock per 60 min => trades never overlap
+MODEL_DIR = os.path.join("ai_engine", "checkpoints", f"stage_b{C.SUFFIX}")
 
 
 # ---------------------------------------------------------------- models
