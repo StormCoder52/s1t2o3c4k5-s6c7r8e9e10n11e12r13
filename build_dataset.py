@@ -33,7 +33,7 @@ def baseline_table(ds):
 
 
 def atr_table(ds):
-    """1-min ATR as % of price per stock. Shows which stocks are too quiet for the cost."""
+    """ATR as % of price per stock. Shows which stocks are too quiet for the cost."""
     g = ds.groupby("Ticker")["ATR_Pct"]
     t = pd.DataFrame({
         "min_%": g.min() * 100,
@@ -50,7 +50,7 @@ def atr_table(ds):
 if __name__ == "__main__":
     print("Building dataset...")
     ds = build_dataset()
-    print("\n1-min ATR per stock (% of price):")
+    print(f"\n{C.BAR_MINUTES}-min ATR per stock (% of price):")
     print(atr_table(ds).to_string())
     print("\nBaseline (enter on every tradable bar):")
     print(baseline_table(ds).to_string(index=False))
