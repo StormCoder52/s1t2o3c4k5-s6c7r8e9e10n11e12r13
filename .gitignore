@@ -1,14 +1,1 @@
-# regenerable outputs - never commit these
-calculated_output/
-calculated_output_5m/
-ai_data/
-ai_engine/checkpoints/
-data_quality_report*.csv
-*.tmp
 
-# python / replit clutter
-__pycache__/
-*.pyc
-.pythonlibs/
-.cache/
-.upm/
